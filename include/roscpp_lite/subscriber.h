@@ -54,6 +54,9 @@ class Subscriber
   // check if we're actually connected
   bool connected() const { return _connected; };
 
+  // _temporary_ method to externally trigger callbacks until threading model is added
+  void process();
+
  private:
 
   /* Register as a new subscriber, and negotiate a connection with existing publishers.

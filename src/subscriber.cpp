@@ -34,4 +34,11 @@ bool Subscriber::register_()
   return false;
 }
 
+void Subscriber::process()
+{
+  // temporary method to allow external triggering of callback processing
+
+  // I am a stub.
+}
+
 } // namespace roscpp_lite
