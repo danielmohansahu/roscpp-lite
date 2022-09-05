@@ -65,7 +65,7 @@ bool ClientWrapper::split_uri(const std::string uri, std::string& host, size_t& 
   // split into component parts
   auto tmp = std::string(uri.begin() + 7, uri.end());
   host = tmp.substr(0, tmp.find(":"));
-  port = std::stoi(tmp.substr(uri.find(":") + 1, tmp.size()));
+  port = std::stoi(tmp.substr(tmp.find(":") + 1, tmp.size()));
 
   // indicate success
   return true;
