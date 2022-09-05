@@ -39,19 +39,27 @@ class ClientWrapper
   static inline std::regex _uri_re {"^http://(\\w+):([0-9]+)$"};
 
  public:
-  // constructor via URI
+  /* Construct a client wrapper for connection to the given URI.
+   */
   explicit ClientWrapper(const std::string& uri);
 
-  // send the specified command to our client
-  bool execute(const std::string_view& method, const XmlRpcValue& request, XmlRpcValue& response, XmlRpcValue& payload);
+  /* send the specified command to our client
+   *
+   * Adapted from:
+   *  https://github.com/ros/ros_comm/blob/f5fa3a168760d62e9693f10dcb9adfffc6132d22/clients/roscpp/src/libros/master.cpp
+   */
+  bool execute(const std::string& method, const XmlRpcValue& request, XmlRpcValue& response, XmlRpcValue& payload);
 
-  // accessor for URI
+  /* Accessor for client URI.
+   */
   std::string uri() const { return _uri; };
 
-  // accessor for host
+  /* Accessor for client host.
+   */
   std::string host() const { return _host; };
 
-  // accessor for port
+  /* Accessor for client port.
+   */
   size_t port() const { return _port; };
 
  private:
