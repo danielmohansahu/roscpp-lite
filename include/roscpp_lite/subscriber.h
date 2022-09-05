@@ -49,7 +49,7 @@ class Subscriber
   Subscriber() = delete;
 
   // expected constructor
-  Subscriber(const std::string& id_, const std::string& topic, std::function<void(const std::any&)>& callback);
+  Subscriber(const std::string& id_, const std::string& topic, std::function<void(const std::any&)> callback);
 
   // check if we're actually connected
   bool connected() const { return _connected; };

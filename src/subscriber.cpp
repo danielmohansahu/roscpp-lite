@@ -8,7 +8,7 @@
 namespace roscpp_lite
 {
 
-Subscriber::Subscriber(const std::string& id_, const std::string& topic, std::function<void(const std::any&)>& callback)
+Subscriber::Subscriber(const std::string& id_, const std::string& topic, std::function<void(const std::any&)> callback)
  : _id(id_), _topic(topic), _callback(callback), _master(new MasterClient(id_))
 {
   // attempt to insert ourselves into the ros graph
