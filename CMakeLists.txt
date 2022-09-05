@@ -11,7 +11,9 @@ find_package(xmlrpcpp REQUIRED)
 # source files
 set(SRC_FILES
   src/client_wrapper.cpp
+  src/master_client.cpp
   src/subscriber.cpp
+  src/utils.cpp
 )
 
 # core roscpp_lite library
