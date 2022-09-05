@@ -16,6 +16,7 @@
 
 // roscpp_lite
 #include "client_wrapper.h"
+#include "master_client.h"
 
 namespace roscpp_lite
 {
@@ -25,30 +26,39 @@ namespace roscpp_lite
 class Subscriber
 {
  private:
+  // the unique ID of our process (like node name)
+  const std::string _id;
+
   // the topic we're interested in
   const std::string _topic;
 
-  // persistent connection to the 'roscore'
-  std::unique_ptr<ClientWrapper> _roscore;
-
-  // list of all connections to publishing nodes
-  std::vector<std::unique_ptr<ClientWrapper>> _publishers;
+  // connection status
+  bool _connected {false};
 
   // user supplied callback
   const std::function<void(const std::any&)> _callback;
+
+  // persistent connection to the 'roscore'
+  std::unique_ptr<MasterClient> _master;
+
+  // list of all connections to publishing nodes
+  std::vector<std::unique_ptr<ClientWrapper>> _publishers;
 
  public:
   // no default constructor
   Subscriber() = delete;
 
   // expected constructor
-  Subscriber(const std::string& topic, std::function<void(const std::any&)>& callback);
+  Subscriber(const std::string& id_, const std::string& topic, std::function<void(const std::any&)>& callback);
+
+  // check if we're actually connected
+  bool connected() const { return _connected; };
 
  private:
 
   /* Register as a new subscriber, and negotiate a connection with existing publishers.
    */
-  void initialize();
+  bool register_();
 
 }; // class Subscriber
 

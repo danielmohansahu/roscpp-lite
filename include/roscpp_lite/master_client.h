@@ -39,6 +39,9 @@ class MasterClient
   /* Construct a master client given an identifier.
    *
    * There's a *very rough* analog here to a ros::NodeHandle.
+   *
+   * Args:
+   *    id_ : A string identifier (a la "node name").
    */
   MasterClient(const std::string& id_);
 
