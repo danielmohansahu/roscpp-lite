@@ -22,5 +22,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC include)
 target_link_libraries(${PROJECT_NAME} ${xmlrpcpp_LIBRARIES})
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -Wpedantic)
 
+# compile example file
+add_executable(subscriber_example example/subscriber_example.cpp)
+target_link_libraries(subscriber_example ${PROJECT_NAME})
+target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -Wpedantic)
+
 # include tests
 add_subdirectory(test)
