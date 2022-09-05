@@ -12,6 +12,7 @@ find_package(xmlrpcpp REQUIRED)
 set(SRC_FILES
   src/client_wrapper.cpp
   src/master_client.cpp
+  src/server_wrapper.cpp
   src/subscriber.cpp
   src/utils.cpp
 )

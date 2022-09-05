@@ -30,7 +30,7 @@ class ClientWrapper
  private:
 
   // identification information
-  const URI _uri;
+  const std::unique_ptr<URI> _uri;
 
   // persistent underlying xml client
   std::unique_ptr<XmlRpcClient> _client;

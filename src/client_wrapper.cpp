@@ -12,7 +12,7 @@ namespace roscpp_lite
 {
 
 ClientWrapper::ClientWrapper(const std::string& uri)
- : _uri(uri), _client(new XmlRpcClient(_uri.host.c_str(), _uri.port, "/"))
+ : _uri(new URI(uri)), _client(new XmlRpcClient(_uri->host.c_str(), _uri->port, "/"))
 {
 }
 

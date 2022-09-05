@@ -33,7 +33,7 @@ class ServerWrapper
   std::unique_ptr<XmlRpcServer> _server;
 
   // identification information
-  URI _uri;
+  std::unique_ptr<URI> _uri;
 
  public:
   /* Construct an XmlRpc server wrapper.

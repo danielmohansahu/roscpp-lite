@@ -4,16 +4,20 @@
 
 // STL
 #include <iostream>
+#include <assert.h>
 
 // roscpp_lite
-#include "roscpp_lite/client_wrapper.h"
+#include "roscpp_lite/server_wrapper.h"
 
 namespace roscpp_lite
 {
 
-ClientWrapper::ClientWrapper()
- : _server(new XmlRpcServer()
+ServerWrapper::ServerWrapper()
+ : _server(new XmlRpcServer())
 {
+  // initialize server
+  const bool bound = _server->bindAndListen(0);
+  assert(bound);
 }
 
 } // namespace roscpp_lite
