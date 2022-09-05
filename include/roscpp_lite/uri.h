@@ -25,6 +25,10 @@ struct URI
   // no default constructor allowed
   URI() = delete;
 
+  // construct via host / port
+  URI(const std::string& host_, const size_t& port_)
+    : uri("http://" + host_ + ":" + std::to_string(port_)) {}
+
   // construct via URI (will throw if invalid)
   URI(const std::string& uri_) : uri(uri_)
   {

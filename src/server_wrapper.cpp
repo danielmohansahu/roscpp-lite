@@ -18,6 +18,9 @@ ServerWrapper::ServerWrapper()
   // initialize server
   const bool bound = _server->bindAndListen(0);
   assert(bound);
+
+  // update URI with server info
+  _uri = std::make_unique<URI>("localhost", _server->get_port());
 }
 
 } // namespace roscpp_lite
