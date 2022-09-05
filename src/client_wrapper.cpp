@@ -2,6 +2,9 @@
  *
  */
 
+// STL
+#include <iostream>
+
 // roscpp_lite
 #include "roscpp_lite/client_wrapper.h"
 
@@ -9,14 +12,8 @@ namespace roscpp_lite
 {
 
 ClientWrapper::ClientWrapper(const std::string& uri)
- : _uri(uri)
+ : _uri(uri), _client(new XmlRpcClient(_uri.host.c_str(), _uri.port, "/"))
 {
-  // Validate URI and extract host / port information
-  if (!split_uri(uri, _host, _port))
-    throw std::runtime_error("Cannot process invalid URI '" + uri + "'.");
-
-  // connect to the core client
-  _client = std::make_unique<XmlRpcClient>(_host.c_str(), _port, "/");
 }
 
 bool ClientWrapper::execute(const std::string& method, const XmlRpcValue& request, XmlRpcValue& response, XmlRpcValue& payload)
@@ -36,6 +33,8 @@ bool ClientWrapper::execute(const std::string& method, const XmlRpcValue& reques
   const int status_code = response[0];
   const std::string status_string = response[1];
 
+  std::cout << "  execute(" << method << ") returned " << status_code << ", msg: " << status_string << std::endl;
+
   // continue validation
   if (status_code != 1)
     return false;
@@ -53,21 +52,6 @@ bool ClientWrapper::execute(const std::string& method, const XmlRpcValue& reques
   }
 
   // indicate success, if we got this far
-  return true;
-}
-
-bool ClientWrapper::split_uri(const std::string uri, std::string& host, size_t& port)
-{
-  // don't bother if this isn't a valid format for the URI
-  if (!std::regex_match(uri, _uri_re))
-    return false;
-
-  // split into component parts
-  auto tmp = std::string(uri.begin() + 7, uri.end());
-  host = tmp.substr(0, tmp.find(":"));
-  port = std::stoi(tmp.substr(tmp.find(":") + 1, tmp.size()));
-
-  // indicate success
   return true;
 }
 
