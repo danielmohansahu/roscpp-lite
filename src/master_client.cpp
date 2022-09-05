@@ -61,4 +61,16 @@ std::optional<std::string> MasterClient::lookupService(const std::string& servic
   return std::nullopt;
 }
 
+std::optional<std::vector<std::pair<std::string,std::string>>> MasterClient::getParam(const std::string& key)
+{
+  // I am a stub.
+  return std::nullopt;
+}
+
+std::optional<std::vector<std::string>> MasterClient::getParamNames()
+{
+  // I am a stub.
+  return std::nullopt;
+}
+
 } // namespace roscpp_lite

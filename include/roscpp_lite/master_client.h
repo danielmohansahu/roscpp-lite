@@ -109,6 +109,22 @@ class MasterClient
    */
   std::optional<std::string> lookupService(const std::string& service);
 
+  /* Get all parameters in the given namespace, or a specific param.
+   *
+   * Args:
+   *    key: The namespace or specific param we want.
+   *
+   * Returns 'std::nullopt' if the call failed, otherwise a vector of pairs of (key, value).
+   * Note that if a single parameter is requested we will still return a (one element) vector.
+   */
+  std::optional<std::vector<std::pair<std::string,std::string>>> getParam(const std::string& key);
+
+  /* Get a list of all parameter names.
+   *
+   * Returns 'std::nullopt' if the call failed, otherwise a vector of strings.
+   */
+  std::optional<std::vector<std::string>> getParamNames();
+
 }; // class MasterClient
 
 } // namespace roscpp_lite
