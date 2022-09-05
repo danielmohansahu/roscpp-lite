@@ -44,6 +44,12 @@ class Subscriber
   // expected constructor
   Subscriber(const std::string& topic, std::function<void(const std::any&)>& callback);
 
+ private:
+
+  /* Register as a new subscriber, and negotiate a connection with existing publishers.
+   */
+  void initialize();
+
 }; // class Subscriber
 
 } // namespace roscpp_lite

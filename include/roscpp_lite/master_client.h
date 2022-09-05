@@ -29,6 +29,9 @@ class MasterClient
   // our identification
   const std::string _id;
 
+  // our URI - defaults to the nominal ROS_MASTER_URI, but can be overridden
+  std::string _uri {"http://localhost:11311"};
+
   // our unique underyling XML client
   std::unique_ptr<ClientWrapper> _client;
 

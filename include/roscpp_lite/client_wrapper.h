@@ -7,6 +7,7 @@
 // STL
 #include <string>
 #include <memory>
+#include <regex>
 #include <optional>
 
 // XmlRpc
@@ -29,12 +30,34 @@ class ClientWrapper
   // persistent underlying xml client
   std::unique_ptr<XmlRpcClient> _client;
 
+  // identification information
+  const std::string _uri;
+  std::string _host;
+  size_t _port;
+
+  // regex used to validate URIs
+  static inline std::regex _uri_re {"^http://(\\w+):([0-9]+)$"};
+
  public:
   // constructor via URI
-  explicit ClientWrapper(const std::optional<std::string>& uri = std::nullopt);
+  explicit ClientWrapper(const std::string& uri);
 
   // send the specified command to our client
   bool execute(const std::string_view& method, const XmlRpcValue& request, XmlRpcValue& response, XmlRpcValue& payload);
+
+  // accessor for URI
+  std::string uri() const { return _uri; };
+
+  // accessor for host
+  std::string host() const { return _host; };
+
+  // accessor for port
+  size_t port() const { return _port; };
+
+ private:
+
+  // validate the given URI and split it into component parts.
+  static bool split_uri(const std::string uri, std::string& host, size_t& port);
 
 }; // class ClientWrapper
 

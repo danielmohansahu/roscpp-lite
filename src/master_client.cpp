@@ -1,6 +1,9 @@
 /*
  */
 
+// STL
+#include <stdlib.h>
+
 // roscpp_lite
 #include "roscpp_lite/master_client.h"
 
@@ -8,8 +11,14 @@ namespace roscpp_lite
 {
 
 MasterClient::MasterClient(const std::string& id_)
+ : _id(id_)
 {
-  // I am a stub.
+  // check if environment variables override ROS_MASTER_URI
+  if (const char* master_uri = getenv("ROS_MASTER_URI"); master_uri)
+    _uri = std::string(master_uri);
+
+  // construct client (it will throw if URI is invalid)
+  _client = std::make_unique<ClientWrapper>(_uri);
 }
 
 std::optional<std::vector<std::string>>
