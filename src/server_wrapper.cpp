@@ -13,11 +13,12 @@ namespace roscpp_lite
 {
 
 ServerWrapper::ServerWrapper()
- : _server(new XmlRpcServer())
+ : _registry(new xmlrpc_c::registry()), _server(new XmlRpcServer(*_registry))
 {
-  // initialize server
-  const bool bound = _server->bindAndListen(0);
-  assert(bound);
+  // get port and host
+  struct sockaddr * listenNameP;
+  sockaddr_len listenNameLen;
+  _server->getListenName(&listenNameP, &listenNameLen);
 
   // update URI with server info
   _uri = std::make_unique<URI>("localhost", _server->get_port());

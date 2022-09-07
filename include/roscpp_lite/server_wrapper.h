@@ -9,8 +9,10 @@
 #include <memory>
 #include <optional>
 
-// XmlRpc
-#include <xmlrpcpp/XmlRpc.h>
+// xmlrpc-c
+#include <xmlrpc-c/base.hpp>
+#include <xmlrpc-c/registry.hpp>
+#include <xmlrpc-c/server_abyss.hpp>
 
 // roscpp_lite
 #include "uri.h"
@@ -22,15 +24,11 @@ namespace roscpp_lite
  */
 class ServerWrapper
 {
- public:
-  // convenience typdefs
-  using XmlRpcServer = XmlRpc::XmlRpcServer;
-  using XmlRpcValue = XmlRpc::XmlRpcValue;
-
  private:
 
-  // persistent underlying xml client
-  std::unique_ptr<XmlRpcServer> _server;
+  // persistent underlying xml server objects
+  std::unique_ptr<xmlrpc_c::registry> _registry;
+  std::unique_ptr<xmlrpc_c::serverAbyss> _server;
 
   // identification information
   std::unique_ptr<URI> _uri;
