@@ -12,43 +12,41 @@ namespace roscpp_lite
 {
 
 ClientWrapper::ClientWrapper(const std::string& uri)
- : _uri(new URI(uri)), _client(new XmlRpcClient(_uri->host.c_str(), _uri->port, "/"))
+ : _uri(new URI(uri)), _client(new xmlrpc_c::clientSimple{})
 {
 }
 
-bool ClientWrapper::execute(const std::string& method, const XmlRpcValue& request, XmlRpcValue& response, XmlRpcValue& payload)
+bool ClientWrapper::execute(const std::string& method,
+                            const xmlrpc_c::paramList& request,
+                            xmlrpc_c::value& response,
+                            xmlrpc_c::value& payload)
 {
-  // execute call
-  if (!_client->execute(method.c_str(), request, response))
-    return false;
-
-  // validate result
-  if (   (response.getType() != XmlRpcValue::TypeArray)
-      || (response.size() != 2 && response.size() != 3)
-      || (response[0].getType() != XmlRpcValue::TypeInt)
-      || (response[1].getType() != XmlRpcValue::TypeString) )
-    return false;
-
-  // get response component information
-  const int status_code = response[0];
-  const std::string status_string = response[1];
-
-  std::cout << "  execute(" << method << ") returned " << status_code << ", msg: " << status_string << std::endl;
-
-  // continue validation
-  if (status_code != 1)
-    return false;
-
-  // format response
-  if (response.size() > 2)
+  // execute call and validate response
+  try
   {
-    payload = response[2];
+    // perform call
+    _client->call(_uri->uri, method, request, &response);
+
+    // extract response sub-information
+    const std::vector<xmlrpc_c::value> res = xmlrpc_c::value_array(response).vectorValueValue();
+    const int status_code = xmlrpc_c::value_int(res[0]);
+    const std::string status_string = xmlrpc_c::value_string(res[1]);
+
+    std::cout << "  execute(" << method << ") returned " << status_code << ", msg: " << status_string << std::endl;
+
+    // continue validation
+    if (status_code != 1)
+      return false;
+
+    // format response
+    if (res.size() > 2)
+      payload = res[2];
+    else
+      payload = xmlrpc_c::value_string("<value><array><data></data></array></value>");
   }
-  else
+  catch (const girerr::error&)
   {
-    std::string empty_array = "<value><array><data></data></array></value>";
-    int offset = 0;
-    payload = XmlRpcValue(empty_array, &offset);
+    return false;
   }
 
   // indicate success, if we got this far

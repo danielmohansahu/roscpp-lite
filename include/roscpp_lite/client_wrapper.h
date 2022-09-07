@@ -9,8 +9,9 @@
 #include <memory>
 #include <optional>
 
-// XmlRpc
-#include <xmlrpcpp/XmlRpc.h>
+// xmlrpc-c
+#include <xmlrpc-c/base.hpp>
+#include <xmlrpc-c/client_simple.hpp>
 
 // roscpp_lite
 #include "uri.h"
@@ -22,18 +23,13 @@ namespace roscpp_lite
  */
 class ClientWrapper
 {
- public:
-  // convenience typdefs
-  using XmlRpcClient = XmlRpc::XmlRpcClient;
-  using XmlRpcValue = XmlRpc::XmlRpcValue;
-
  private:
 
   // identification information
   const std::unique_ptr<URI> _uri;
 
   // persistent underlying xml client
-  std::unique_ptr<XmlRpcClient> _client;
+  std::unique_ptr<xmlrpc_c::clientSimple> _client;
 
  public:
   /* Construct a client wrapper for connection to the given URI.
@@ -45,7 +41,7 @@ class ClientWrapper
    * Adapted from:
    *  https://github.com/ros/ros_comm/blob/f5fa3a168760d62e9693f10dcb9adfffc6132d22/clients/roscpp/src/libros/master.cpp
    */
-  bool execute(const std::string& method, const XmlRpcValue& request, XmlRpcValue& response, XmlRpcValue& payload);
+  bool execute(const std::string& method, const xmlrpc_c::paramList& request, xmlrpc_c::value& response, xmlrpc_c::value& payload);
 
 }; // class ClientWrapper
 
