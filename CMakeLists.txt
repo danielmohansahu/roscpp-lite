@@ -5,8 +5,8 @@ project(roscpp_lite)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# XMLRPC for ROS Communication
-find_package(xmlrpcpp REQUIRED)
+# find XMLRPC-C
+find_package(XMLRPC REQUIRED COMPONENTS c++2)
 
 # source files
 set(SRC_FILES
@@ -19,8 +19,8 @@ set(SRC_FILES
 
 # core roscpp_lite library
 add_library(${PROJECT_NAME} STATIC ${SRC_FILES})
-target_include_directories(${PROJECT_NAME} PUBLIC include)
-target_link_libraries(${PROJECT_NAME} ${xmlrpcpp_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PUBLIC include ${XMLRPC_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${XMLRPC_LIBRARIES})
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -Wpedantic)
 
 # compile example file
@@ -29,4 +29,4 @@ target_link_libraries(subscriber_example ${PROJECT_NAME})
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -Wpedantic)
 
 # include tests
-add_subdirectory(test)
+# add_subdirectory(test)
